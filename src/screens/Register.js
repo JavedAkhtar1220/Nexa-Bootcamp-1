@@ -1,13 +1,16 @@
-import React, { useState } from 'react'
+import React, { useState } from 'react';
+
+import { TextInput, Button } from 'react-native-paper';
 
 import {
     StyleSheet,
     Text,
     SafeAreaView,
     View,
-    TextInput,
+    // TextInput,
     TouchableOpacity,
-    Alert
+    Alert,
+    ActivityIndicator
 } from 'react-native';
 
 // Firebase
@@ -21,6 +24,7 @@ const Register = ({ navigation }) => {
     const [username, setUsername] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const [disBtn, setDisBtn] = useState(false);
 
     const onSignup = () => {
 
@@ -41,6 +45,9 @@ const Register = ({ navigation }) => {
             return false;
         }
         else {
+
+            setDisBtn(true);
+
             createUserWithEmailAndPassword(auth, email, password)
                 .then(async user => {
 
@@ -55,6 +62,10 @@ const Register = ({ navigation }) => {
                         })
 
                 })
+                .catch(err => {
+                    setDisBtn(false);
+                    Alert.alert(err.message);
+                })
         }
     }
 
@@ -64,9 +75,9 @@ const Register = ({ navigation }) => {
                 <Text style={styles.head}>REGISTER</Text>
                 <View style={{ marginTop: 40, paddingHorizontal: 30 }}>
                     <View style={{ marginBottom: 10 }}>
-                        <Text style={styles.label}>Full Name</Text>
                         <TextInput
-                            style={styles.input}
+                            label="Full Name"
+                            mode="outlined"
                             value={username}
                             onChangeText={(e) => setUsername(e)}
                             placeholder="Javed Akhtar"
@@ -75,9 +86,9 @@ const Register = ({ navigation }) => {
                     </View>
 
                     <View style={{ marginBottom: 10 }}>
-                        <Text style={styles.label}>Email Address</Text>
                         <TextInput
-                            style={styles.input}
+                            label="Email"
+                            mode="outlined"
                             value={email}
                             onChangeText={(e) => setEmail(e)}
                             placeholder="example@abc.com"
@@ -86,18 +97,21 @@ const Register = ({ navigation }) => {
                         />
                     </View>
                     <View style={{ marginBottom: 10 }}>
-                        <Text style={styles.label}>Password</Text>
                         <TextInput
-                            style={styles.input}
+                            label="Password"
+                            mode="outlined"
                             value={password}
                             onChangeText={(e) => setPassword(e)}
                             placeholder="************"
                             secureTextEntry="true"
                         />
                     </View>
-                    <TouchableOpacity style={styles.BtnLogin} onPress={onSignup}>
-                        <Text style={{ color: 'white', fontSize: 18, fontWeight: "500" }}>Signup</Text>
-                    </TouchableOpacity>
+                    {disBtn ? <Button mode="contained" style={{ paddingVertical: 6 }} disabled>
+                        <ActivityIndicator />
+                    </Button> : <Button mode="contained" style={{ paddingVertical: 6 }} onPress={onSignup}>
+                        Signup
+                    </Button>}
+
                     <View style={{ marginTop: 15, display: 'flex', flexDirection: 'row', justifyContent: "flex-end", alignItems: "center" }}>
                         <Text style={{ fontSize: 16 }}>
                             Already an account?
@@ -138,6 +152,11 @@ const styles = StyleSheet.create({
         alignItems: "center",
         backgroundColor: "blue",
         padding: 10,
+    },
+
+    BtnLoginDis: {
+        padding: 10,
+        backgroundColor: "#ccc"
     }
 })
 

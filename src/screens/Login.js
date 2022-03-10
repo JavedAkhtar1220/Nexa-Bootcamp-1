@@ -1,13 +1,16 @@
-import React, { useState } from 'react'
+import React, { useState } from 'react';
+
+import { TextInput, Button } from 'react-native-paper';
 
 import {
     StyleSheet,
     Text,
     SafeAreaView,
     View,
-    TextInput,
+    // TextInput,
     TouchableOpacity,
-    Alert
+    Alert,
+    ActivityIndicator
 } from 'react-native';
 
 // Firebase 
@@ -18,6 +21,7 @@ const Login = ({ navigation }) => {
 
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const [disBtn, setDisBtn] = useState(false);
 
     const onLogin = () => {
 
@@ -34,11 +38,14 @@ const Login = ({ navigation }) => {
             return false;
         }
         else {
+
+            setDisBtn(true);
             signInWithEmailAndPassword(auth, email, password)
                 .then(user => {
-                    navigation.navigate("Home")
+                    navigation.navigate("Home");
                 })
                 .catch(err => {
+                    setDisBtn(false);
                     Alert.alert(err.message);
                 })
         }
@@ -50,29 +57,33 @@ const Login = ({ navigation }) => {
                 <Text style={styles.head}>LOGIN</Text>
                 <View style={{ marginTop: 40, paddingHorizontal: 30 }}>
                     <View style={{ marginBottom: 10 }}>
-                        <Text style={styles.label}>Email Address</Text>
                         <TextInput
-                            style={styles.input}
                             value={email}
+                            label="Email Address"
+                            mode="outlined"
                             onChangeText={(e) => setEmail(e)}
                             placeholder="example@abc.com"
-                            autoCorrect="false"
+                            autoCorrect="none"
                             autoCapitalize="none"
                         />
                     </View>
                     <View style={{ marginBottom: 10 }}>
-                        <Text style={styles.label}>Password</Text>
                         <TextInput
-                            style={styles.input}
+                            label="Password"
                             onChangeText={(e) => setPassword(e)}
+                            mode="outlined"
                             value={password}
                             placeholder="************"
                             secureTextEntry="true"
                         />
                     </View>
-                    <TouchableOpacity style={styles.BtnLogin} onPress={onLogin}>
-                        <Text style={{ color: 'white', fontSize: 18, fontWeight: "500" }}>Login</Text>
-                    </TouchableOpacity>
+                    {disBtn ? <Button mode="contained" style={{ paddingVertical: 6 }} disabled>
+                        <ActivityIndicator />
+                    </Button> :
+                        <Button mode="contained" style={{ paddingVertical: 6 }} onPress={onLogin}>
+                            login
+                        </Button>}
+
                     <View style={{ marginTop: 15, display: 'flex', flexDirection: 'row', justifyContent: "flex-end", alignItems: "center" }}>
                         <Text style={{ fontSize: 16 }}>
                             New User?
@@ -93,7 +104,6 @@ const styles = StyleSheet.create({
         paddingHorizontal: 10,
         fontWeight: 500,
         marginTop: 100,
-
     },
     head: {
         fontSize: 40,
@@ -113,6 +123,10 @@ const styles = StyleSheet.create({
         alignItems: "center",
         backgroundColor: "blue",
         padding: 10,
+    },
+    BtnLoginDis: {
+        padding: 10,
+        backgroundColor: "#ccc"
     },
     error: {
         color: 'red',
