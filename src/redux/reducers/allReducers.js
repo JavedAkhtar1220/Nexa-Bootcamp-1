@@ -20,3 +20,12 @@ export const userData = (state = {}, { type, userData }) => {
             return state;
     }
 }
+
+export const themeMode = (state = "light", { type, mode }) => {
+    switch (type) {
+        case actionType.THEME:
+            return mode;
+        default:
+            return state
+    }
+}

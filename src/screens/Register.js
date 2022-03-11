@@ -7,7 +7,6 @@ import {
     Text,
     SafeAreaView,
     View,
-    // TextInput,
     TouchableOpacity,
     Alert,
     ActivityIndicator

@@ -1,8 +1,9 @@
 import { combineReducers } from 'redux';
 
-import { checkAuth, userData } from './allReducers';
+import { checkAuth, userData, themeMode } from './allReducers';
 
 export const rootReducer = combineReducers({
     isLogin: checkAuth,
-    userData: userData
+    userData: userData,
+    theme: themeMode
 })

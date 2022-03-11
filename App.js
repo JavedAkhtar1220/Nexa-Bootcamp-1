@@ -2,6 +2,7 @@ import React, { useEffect } from 'react'
 
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { SafeAreaView } from 'react-native';
 
 // Pages 
 import Home from './src/screens/Home';
@@ -30,7 +31,7 @@ const App = () => {
     if (docRef.exists()) {
 
       dispatch(userData(docRef.data()));
-      
+
     }
 
   }
@@ -51,7 +52,7 @@ const App = () => {
     <NavigationContainer>
       <Stack.Navigator>
         {selector ? (
-          <Stack.Screen component={Home} name="Home" />
+          <Stack.Screen component={Home} name="Home" options={{ headerShown: false }} />
         )
           : (
             <>
@@ -61,7 +62,6 @@ const App = () => {
           )}
       </Stack.Navigator>
     </NavigationContainer>
-
   )
 }
 

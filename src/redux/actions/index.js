@@ -19,3 +19,10 @@ export const clearUserData = () => {
         type: actionType.CLEAR_USER_DATA,
     }
 }
+
+export const themeMode = (theme) => {
+    return {
+        type: actionType.THEME,
+        mode: theme
+    }
+}
